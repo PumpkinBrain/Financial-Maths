@@ -6,6 +6,6 @@ public class Main {
 		
 		log.input();
 		log.checkTime();
-		log.showResults();
+		log.unknownCheck();
 	}
 }
