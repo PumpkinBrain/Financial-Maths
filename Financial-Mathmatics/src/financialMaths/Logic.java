@@ -3,19 +3,45 @@ package financialMaths;
 public class Logic {
 	Data dat = new Data();
 	
+//user input method
+//try numerical inputs and if mismatch occurs, set the value of corresponding bool to true, representing an unknown number,
+//then use scan.next() to clear scan content so it doesn't affect future checks
 	protected void input() {
-		dat.setPv(Scan.nextDouble("Insert Starting value"));
-		dat.setI(Scan.nextDouble("Insert tax in %"));
+		dat.setType(Scan.nextChar("Do you wish to calculate simple or compound interest? (S , C)"));
+		
+		try {
+			dat.setPv(Scan.nextDouble("Insert Starting value (Pv)"));
+		} catch(Exception e) {
+			dat.setValPv(true);
+			Scan.next();
+		}
+		
+		try {
+			dat.setI(Scan.nextDouble("Insert tax in % (I)"));
+		} catch(Exception e) {
+			dat.setValI(true);
+			Scan.next();
+		}
+		
 		dat.setTax(Scan.nextChar("Is the tax in days, months or years? (d, m, y)"));
-		dat.setN(Scan.nextDouble("Inset time"));
+	
+		try {
+			dat.setN(Scan.nextDouble("Inset time (N)"));
+		} catch(Exception e) {
+			dat.setValN(true);
+			Scan.next();
+		}
+		
 		dat.setTim(Scan.nextChar("Is the time in days, months or years? (d, m, y)"));
 	}
 	
-//if the time measurement is different from the tax measurement, make the time equal to the tax
+//time unit conversion method
+//if the time measurement is different from the tax measurement,
+//compare tax to time in each case and convert time
 	protected void checkTime() {
 		dat.setI(dat.getI() / 100); //divide tax by 100 to get the decimal value
-		
-		if (dat.getTax() != dat.getTim()) {
+
+		if (dat.getTim() != dat.getTax()) {
 			switch (dat.getTax()) {
 			case 'd':
 				if (dat.getTim() == 'm') {
@@ -41,12 +67,25 @@ public class Logic {
 		}
 	}
 	
-	protected void showResults() {
-		System.out.println("-------------------------------");
-		System.out.println("        -Simple Interest-");
-		System.out.println(dat.simpleInterest());
-		System.out.println("-------------------------------");
-		System.out.println("        -Compund Interest-");
-		System.out.println(dat.compoundInterest());
+//this method will check if simple or compound interest was required by user
+//then check for unknown numbers and apply corresponding formula method
+//if there is no unknown numbers, do the standard formula
+	protected void unknownCheck() {
+		switch(dat.getType()) {
+		case 's':
+			if(dat.getValPv()) {
+				System.out.println(dat.simpleFindPv());
+			} else if (dat.getValN()) {
+				System.out.println(dat.simpleFindN());
+			} else if (dat.getValI()) {
+				System.out.println(dat.simpleFindI());
+			} else {
+				System.out.println(dat.simpleInterest());
+			}
+		break;
+		case 'c':
+			System.out.println(dat.compoundInterest());
+		break;
+		}
 	}
 }
