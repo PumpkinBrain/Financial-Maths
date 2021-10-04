@@ -31,7 +31,6 @@ public class Logic {
 			dat.setValN(true);
 			Scan.next();
 		}
-		
 		dat.setTim(Scan.nextChar("Is the time in days, months or years? (d, m, y)"));
 	}
 	
@@ -70,22 +69,37 @@ public class Logic {
 //this method will check if simple or compound interest was required by user
 //then check for unknown numbers and apply corresponding formula method
 //if there is no unknown numbers, do the standard formula
-	protected void unknownCheck() {
-		switch(dat.getType()) {
-		case 's':
-			if(dat.getValPv()) {
-				System.out.println(dat.simpleFindPv());
-			} else if (dat.getValN()) {
-				System.out.println(dat.simpleFindN());
-			} else if (dat.getValI()) {
-				System.out.println(dat.simpleFindI());
-			} else {
-				System.out.println(dat.simpleInterest());
-			}
-		break;
-		case 'c':
+	protected void unknownCheckSimple() {
+		if(dat.getValPv()) {
+			System.out.println(dat.simpleFindPv());
+		} else if (dat.getValN()) {
+			System.out.println(dat.simpleFindN());
+		} else if (dat.getValI()) {
+			System.out.println(dat.simpleFindI());
+		} else {
+			System.out.println(dat.simpleInterest());
+		}
+	}
+	
+	protected void unknownCheckCompound() {
+		if(dat.getValPv()) {
+			System.out.println(dat.compoundFindPv());
+		} else if (dat.getValN()) {
+			System.out.println(dat.compoundFindN());
+		} else if (dat.getValI()) {
+			System.out.println(dat.compoundFindI());
+		} else {
 			System.out.println(dat.compoundInterest());
-		break;
+		}
+	}
+	
+	protected void run() {
+		input();
+		checkTime();
+		if(dat.getType() == 's') {
+			unknownCheckSimple();
+		} else {
+			unknownCheckCompound();
 		}
 	}
 }
