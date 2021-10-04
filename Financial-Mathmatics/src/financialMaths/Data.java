@@ -1,67 +1,90 @@
 package financialMaths;
-
+	
 public class Data {
-	private double pv, fv, i, n; //original values
-	private double temPv, temFv, temI, temN, interest; //temporary values so original values aren't lost when executing methods
+	private double pv, fv, i, n, interest; //original values
 	private char tax, tim, type;
-	private boolean valPv, valI, valN; //bool values will be used to check unknown numbers
+	private boolean valPv, valI, valN; //bool values will be used to check for unknown numbers
 	
 //formulas section.
 //at the start of each formula, the tem variables will be "reset" by getting the values input by the user
 //the findN and findI methods will ask for the Fv because it's needed for the formula
 //Simple Interest formulas:
 	protected double simpleInterest() {
-		temPv = pv; temI = i; temN = n;
-		temI = 1 + (temI * temN);
-		temFv = temPv * temI;
-		interest = temFv - temPv;
+		i = 1 + (i * n);
+		fv = pv * i;
+		interest = fv - pv;
 		System.out.println("-------Simple Interest----------");
 		System.out.println("Interest: " + interest);
 		System.out.print("Final Value: ");
-		return temFv;
+		return fv;
 	}
 	
 	protected double simpleFindPv() {
 		fv = Scan.nextDouble("What is the final value? (Fv)");
-		temFv = fv; temI = i; temN = n;
-		temI = (temI * temN) + 1;
-		temPv = temFv / temI;
+		i = (i * n) + 1;
+		pv = fv / i;
 		System.out.println("-----------------");
 		System.out.print("Pv value: ");
-		return temPv;
+		return pv;
 	}
 	
 	protected double simpleFindI() {
 		fv = Scan.nextDouble("What is the final value? (Fv)");
-		temPv = pv; temFv = fv; temN = n;
-		temFv = (temFv / temPv) - 1;
-		temI = temFv / temN;
+		fv = (fv / pv) - 1;
+		i = fv / n;
 		System.out.println("-----------------");
 		System.out.print("I value: ");
-		return temI;
+		return i;
 	}
 	
 	protected double simpleFindN() {
 		fv = Scan.nextDouble("What is the final value? (Fv)");
-		temPv = pv; temFv = fv; temI = i;
-		temFv = (temFv / temPv) - 1;
-		temN = temFv / temI;
+		fv = (fv / pv) - 1;
+		n = fv / i;
 		System.out.println("-----------------");
 		System.out.print("N value: ");
-		return temN;
+		return n;
 	}
 	
 //Compound Interest formulas:
 	protected double compoundInterest() {
-		temPv = pv; temI = i; temN = n;
-		temI = 1 + temI;
-		temI = Math.pow(temI, temN);
-		temFv = temPv * temI;
-		interest = temFv - temPv;
+		i = 1 + i;
+		i = Math.pow(i, n);
+		fv = pv * i;
+		interest = fv - pv;
 		System.out.println("--------Compound Interest---------");
 		System.out.println("Interest: " + interest);
 		System.out.print("Final Value: ");
-		return temFv;
+		return fv;
+	}
+	
+	protected double compoundFindPv() {
+		fv = Scan.nextDouble("what is the final value?");
+		i = 1 + i;
+		i = Math.pow(i, n);
+		pv = fv / i;
+		System.out.print("Pv value: ");
+		return pv;
+	}
+	
+	protected double compoundFindI() {
+		fv = Scan.nextDouble("What is the final value?");
+		fv = fv / pv;
+		fv = Math.pow(fv, 1 / n);
+		i = fv - 1;
+		System.out.print("I value: ");
+		return i;
+	}
+	
+	protected double compoundFindN() {
+		fv = Scan.nextDouble("What is the final value?");
+		fv = fv / pv;
+		fv = Math.log10(fv);
+		i = 1 + i;
+		i = Math.log10(i);
+		n = fv / i;
+		System.out.print("N value: ");
+		return n;
 	}
 	
 //getters and setters
